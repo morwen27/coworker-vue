@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <person-list :persons="persons"></person-list>
+    <person-list
+      :persons="persons"
+      @remove-person="removePerson($event)"
+    ></person-list>
+    <button-action :type-action="'add'" :is-modal="false"></button-action>
   </div>
 </template>
 
@@ -9,12 +13,14 @@ import axios from "axios";
 import { Component, Vue } from "vue-property-decorator";
 import { Person } from "./models/person";
 import PersonList from "@/components/PersonList.vue";
+import ButtonAction from "@/components/ButtonAction.vue";
 
 const baseURL = "http://localhost:3000/persons";
 
 @Component({
   components: {
     PersonList,
+    ButtonAction,
   },
 })
 export default class App extends Vue {
@@ -28,6 +34,10 @@ export default class App extends Vue {
     } catch (error) {
       console.log(`Во время запроза произошла следующая ошибка: ${error}`);
     }
+  }
+
+  removePerson(id: number) {
+    console.log(id);
   }
 }
 </script>
@@ -55,5 +65,12 @@ body {
 
 ul {
   list-style: none;
+}
+
+.button-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  margin: 0 -5px -5px;
 }
 </style>

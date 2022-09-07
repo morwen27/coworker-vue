@@ -24,6 +24,10 @@ const buttonTypes = {
     title: "Изменить",
     class: "button_edit",
   },
+  [ButtonActions.close]: {
+    title: "Закрыть",
+    class: "button_close",
+  },
   [ButtonActions.remove]: {
     title: "Удалить",
     class: "button_remove",
@@ -31,16 +35,22 @@ const buttonTypes = {
 };
 
 @Component
-export default class ButtonAction extends Vue {
+export default class BaseButton extends Vue {
   @Prop() readonly typeAction!: ButtonActions;
   @Prop() readonly isModal!: boolean;
+
+  modalButtonClasses = ["button_modal", "button_title"];
 
   get title() {
     return this.isModal ? buttonTypes[this.typeAction].title : "";
   }
 
   get classModificator() {
-    return buttonTypes[this.typeAction].class;
+    return this.isModal
+      ? `${buttonTypes[this.typeAction].class} ${this.modalButtonClasses.join(
+          " "
+        )}`
+      : buttonTypes[this.typeAction].class;
   }
 }
 </script>
@@ -72,6 +82,25 @@ export default class ButtonAction extends Vue {
   &.button_add {
     background-position: center center;
     background-size: 70% 70%;
+  }
+
+  &.button_modal {
+    display: inline-block;
+    vertical-align: baseline;
+    margin: 10px 10px 0;
+  }
+  &.button_title {
+    padding: 5px 10px;
+    color: white;
+    background: #98ccfd;
+  }
+  &.button_close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+  .button:hover {
+    opacity: 0.7;
   }
 }
 </style>

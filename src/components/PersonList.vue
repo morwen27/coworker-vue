@@ -1,43 +1,55 @@
 <template>
-  <ul v-if="persons?.length" class="persons-list">
-    <li
-      v-for="person of persons"
-      v-bind:person="person"
-      :key="person.id"
-      class="person-list__item"
-    >
-      <span>{{ person.firstName }} {{ person.lastName }}</span>
-      <span class="button-wrapper">
-        <button-action
-          :type-action="'edit'"
-          :is-modal="false"
-          @click="openModal"
-        ></button-action>
-        <button-action
-          :type-action="'remove'"
-          :is-modal="false"
-          @click="removePerson(person.id)"
-        ></button-action>
-      </span>
-    </li>
-  </ul>
-  <p v-else class="persons-list persons-list_empty">
-    Список сотрудников пуст. Чтобы добавить, нажмите кнопку ниже
-  </p>
+  <div>
+    <ul v-if="persons?.length" class="persons-list">
+      <li
+        v-for="person of persons"
+        v-bind:person="person"
+        :key="person.id"
+        class="person-list__item"
+      >
+        <span>{{ person.firstName }} {{ person.lastName }}</span>
+        <span class="button-wrapper">
+          <base-button
+            :type-action="'edit'"
+            :is-modal="false"
+            @click="openModal"
+          ></base-button>
+          <base-button
+            :type-action="'remove'"
+            :is-modal="false"
+            @click="removePerson(person.id)"
+          ></base-button>
+        </span>
+      </li>
+    </ul>
+    <p v-else class="persons-list persons-list_empty">
+      Список сотрудников пуст. Чтобы добавить, нажмите кнопку ниже
+    </p>
+    <base-button
+      :type-action="'add'"
+      :is-modal="false"
+      @click="openModal"
+    ></base-button>
+    <modal-window :show="showModal" :actionName="'remove'"></modal-window>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from "vue-property-decorator";
-import ButtonAction from "@/components/ButtonAction.vue";
+import BaseButton from "@/components/BaseButton.vue";
+import ModalWindow from "@/components/ModalWindow.vue";
 import { Person } from "@/models/person";
 
 @Component({
   components: {
-    ButtonAction,
+    BaseButton,
+    ModalWindow,
   },
 })
 export default class PersonList extends Vue {
   @Prop() readonly persons?: Person[];
+
+  showModal = false;
 
   @Emit("remove-person")
   removePerson(id: number) {
@@ -45,7 +57,7 @@ export default class PersonList extends Vue {
   }
 
   openModal() {
-    console.log(`some was opened`);
+    this.showModal = !this.showModal;
   }
 }
 </script>

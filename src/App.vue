@@ -4,7 +4,6 @@
       :persons="persons"
       @remove-person="removePerson($event)"
     ></person-list>
-    <button-action :type-action="'add'" :is-modal="false"></button-action>
   </div>
 </template>
 
@@ -13,14 +12,14 @@ import axios from "axios";
 import { Component, Vue } from "vue-property-decorator";
 import { Person } from "./models/person";
 import PersonList from "@/components/PersonList.vue";
-import ButtonAction from "@/components/ButtonAction.vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 const baseURL = "http://localhost:3000/persons";
 
 @Component({
   components: {
     PersonList,
-    ButtonAction,
+    BaseButton,
   },
 })
 export default class App extends Vue {
@@ -67,10 +66,36 @@ ul {
   list-style: none;
 }
 
+h2 {
+  padding: 15px;
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: 10px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background: #98ccfd;
+}
+
 .button-wrapper {
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-end;
   margin: 0 -5px -5px;
+}
+
+@media screen and (max-width: 475px) {
+  .person-list__item {
+    position: relative;
+    padding: 25px 15px 25px 50px;
+    background-position: 5px center;
+  }
+  .button-wrapper {
+    width: 40px;
+  }
+  .button {
+    min-width: 30px;
+    min-height: 30px;
+  }
 }
 </style>

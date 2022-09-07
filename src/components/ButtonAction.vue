@@ -1,5 +1,10 @@
 <template>
-  <button type="button" class="button" :class="classModificator">
+  <button
+    type="button"
+    class="button"
+    :class="classModificator"
+    v-on="$listeners"
+  >
     {{ title }}
   </button>
 </template>
@@ -8,9 +13,9 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { ButtonActions } from "@/models/button-actions";
-import { Emit, Prop } from "vue-property-decorator";
+import { Prop } from "vue-property-decorator";
 
-export const buttonTypes = {
+const buttonTypes = {
   [ButtonActions.add]: {
     title: "Добавить",
     class: "button_add",
@@ -29,8 +34,6 @@ export const buttonTypes = {
 export default class ButtonAction extends Vue {
   @Prop() readonly typeAction!: ButtonActions;
   @Prop() readonly isModal!: boolean;
-
-  eventName!: string;
 
   get title() {
     return this.isModal ? buttonTypes[this.typeAction].title : "";

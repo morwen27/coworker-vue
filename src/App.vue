@@ -37,7 +37,7 @@ export default class App extends Vue {
   }
 
   removePerson(id: number) {
-    console.log(id);
+    this.persons = this.persons.filter((p) => p.id !== id);
   }
 }
 </script>

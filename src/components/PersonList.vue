@@ -8,12 +8,15 @@
     >
       <span>{{ person.firstName }} {{ person.lastName }}</span>
       <span class="button-wrapper">
-        <!-- <button type="button" @click="removePerson(person.id)"></button> -->
-        <button-action :type-action="'edit'" :is-modal="false"></button-action>
+        <button-action
+          :type-action="'edit'"
+          :is-modal="false"
+          @click="openModal"
+        ></button-action>
         <button-action
           :type-action="'remove'"
           :is-modal="false"
-          @click="removePerson($event)"
+          @click="removePerson(person.id)"
         ></button-action>
       </span>
     </li>
@@ -36,10 +39,13 @@ import { Person } from "@/models/person";
 export default class PersonList extends Vue {
   @Prop() readonly persons?: Person[];
 
-  // @Emit("remove-person")
-  removePerson(evt: Event) {
-    console.log(evt.target);
-    // return evt.target;
+  @Emit("remove-person")
+  removePerson(id: number) {
+    return id;
+  }
+
+  openModal() {
+    console.log(`some was opened`);
   }
 }
 </script>

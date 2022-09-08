@@ -1,26 +1,11 @@
 <template>
   <div>
     <ul v-if="persons?.length" class="persons-list">
-      <li
+      <person-item
         v-for="person of persons"
-        v-bind:person="person"
+        :person="person"
         :key="person.id"
-        class="person-list__item"
-      >
-        <span>{{ person.firstName }} {{ person.lastName }}</span>
-        <span class="button-wrapper">
-          <base-button
-            :type-action="'edit'"
-            :is-modal="false"
-            @click="openModal('edit')"
-          ></base-button>
-          <base-button
-            :type-action="'remove'"
-            :is-modal="false"
-            @click="openModal('remove')"
-          ></base-button>
-        </span>
-      </li>
+      ></person-item>
     </ul>
     <p v-else class="persons-list persons-list_empty">
       Список сотрудников пуст. Чтобы добавить, нажмите кнопку ниже
@@ -41,21 +26,35 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from "vue-property-decorator";
+import PersonItem from "@/components/PersonItem.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import ModalWindow from "@/components/ModalWindow.vue";
 import { Person } from "@/models/person";
+import axios from "axios";
+
+const baseURL = "http://localhost:3000/persons";
 
 @Component({
   components: {
+    PersonItem,
     BaseButton,
     ModalWindow,
   },
 })
 export default class PersonList extends Vue {
-  @Prop() readonly persons?: Person[];
+  persons: Person[] = [];
 
   showModal = false;
   actionForModal = "";
+
+  async created() {
+    try {
+      const res = await axios.get(`${baseURL}`);
+      this.persons = res.data;
+    } catch (error) {
+      console.log(`Во время запроза произошла следующая ошибка: ${error}`);
+    }
+  }
 
   @Emit("remove-person")
   removePerson(id: number) {

@@ -1,20 +1,13 @@
 <template>
   <div id="app">
-    <person-list
-      :persons="persons"
-      @remove-person="removePerson($event)"
-    ></person-list>
+    <person-list></person-list>
   </div>
 </template>
 
 <script lang="ts">
-import axios from "axios";
 import { Component, Vue } from "vue-property-decorator";
-import { Person } from "./models/person";
 import PersonList from "@/components/PersonList.vue";
 import BaseButton from "@/components/BaseButton.vue";
-
-const baseURL = "http://localhost:3000/persons";
 
 @Component({
   components: {
@@ -22,23 +15,7 @@ const baseURL = "http://localhost:3000/persons";
     BaseButton,
   },
 })
-export default class App extends Vue {
-  message = "hello";
-  persons: Person[] = [];
-
-  async created() {
-    try {
-      const res = await axios.get(`${baseURL}`);
-      this.persons = res.data;
-    } catch (error) {
-      console.log(`Во время запроза произошла следующая ошибка: ${error}`);
-    }
-  }
-
-  removePerson(id: number) {
-    this.persons = this.persons.filter((p) => p.id !== id);
-  }
-}
+export default class App extends Vue {}
 </script>
 
 <style lang="scss">

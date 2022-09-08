@@ -8,20 +8,35 @@
           <form ref="modal">
             <label for="firstName">
               <span class="label__title">Имя</span>
-              <input type="text" id="firstName" />
+              <input
+                v-model.trim="person.firstName"
+                v-focus
+                type="text"
+                id="firstName"
+              />
             </label>
             <label for="lastName">
               <span class="label__title">Фамилия</span>
-              <input type="text" id="lastName" />
+              <input v-model.trim="person.lastName" type="text" id="lastName" />
             </label>
           </form>
         </template>
+
         <template v-else-if="actionName === 'remove'">
           <p class="modal__warn">Вы уверены, что хотите удалить сотрудника?</p>
         </template>
+
         <div class="button-wrapper">
-          <base-button :typeAction="'close'" :isModal="true"></base-button>
-          <base-button :typeAction="actionName" :isModal="true"></base-button>
+          <base-button
+            :typeAction="'close'"
+            :isModal="true"
+            @click="closeModal"
+          ></base-button>
+          <base-button
+            :typeAction="actionName"
+            :isModal="true"
+            @click="submitData"
+          ></base-button>
         </div>
       </div>
     </div>
@@ -29,10 +44,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 import BaseButton from "@/components/BaseButton.vue";
 import ModalType from "@/models/modal-type";
 import { ButtonActions } from "@/models/button-actions";
+import { Person } from "@/models/person";
 
 const modalTypes: ModalType[] = [
   {
@@ -58,9 +74,32 @@ export default class ModalWindow extends Vue {
   @Prop() show!: boolean;
   @Prop() actionName!: string;
 
+  @Emit("close-modal")
+  closeModal(): boolean {
+    return !this.show;
+  }
+
+  @Emit("submit-data")
+  submitData(): Person {
+    this.some();
+    return this.person;
+  }
+
   get title(): string {
     const index = modalTypes.findIndex((type) => type.name === this.actionName);
     return modalTypes[index].modalTitle;
+  }
+
+  get person(): Person {
+    return {
+      firstName: "",
+      lastName: "",
+      id: Date.now(),
+    };
+  }
+
+  some() {
+    console.log(this.$refs.modal);
   }
 }
 </script>

@@ -30,7 +30,12 @@
       :is-modal="false"
       @click="openModal('add')"
     ></base-button>
-    <modal-window :show="showModal" :actionName="actionForModal"></modal-window>
+    <modal-window
+      :show="showModal"
+      :actionName="actionForModal"
+      @close-modal="closeModal"
+      @submit-data="getChangedData"
+    ></modal-window>
   </div>
 </template>
 
@@ -60,6 +65,14 @@ export default class PersonList extends Vue {
   openModal(action: string) {
     this.actionForModal = action;
     this.showModal = !this.showModal;
+  }
+
+  closeModal() {
+    this.showModal = !this.showModal;
+  }
+
+  getChangedData(person: Person) {
+    console.log(person);
   }
 }
 </script>

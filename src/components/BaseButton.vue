@@ -39,7 +39,7 @@ export default class BaseButton extends Vue {
   @Prop() readonly typeAction!: ButtonActions;
   @Prop() readonly isModal!: boolean;
 
-  modalButtonClasses = ["button_modal", "button_title"];
+  modalButtonClasses = ["button_modal"];
 
   get title() {
     return this.isModal ? buttonTypes[this.typeAction].title : "";
@@ -88,16 +88,9 @@ export default class BaseButton extends Vue {
     display: inline-block;
     vertical-align: baseline;
     margin: 10px 10px 0;
-  }
-  &.button_title {
     padding: 5px 10px;
     color: white;
     background: #98ccfd;
-  }
-  &.button_close {
-    position: absolute;
-    top: 5px;
-    right: 5px;
   }
   .button:hover {
     opacity: 0.7;

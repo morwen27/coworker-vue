@@ -12,12 +12,12 @@
           <base-button
             :type-action="'edit'"
             :is-modal="false"
-            @click="openModal"
+            @click="openModal('edit')"
           ></base-button>
           <base-button
             :type-action="'remove'"
             :is-modal="false"
-            @click="removePerson(person.id)"
+            @click="openModal('remove')"
           ></base-button>
         </span>
       </li>
@@ -28,9 +28,9 @@
     <base-button
       :type-action="'add'"
       :is-modal="false"
-      @click="openModal"
+      @click="openModal('add')"
     ></base-button>
-    <modal-window :show="showModal" :actionName="'remove'"></modal-window>
+    <modal-window :show="showModal" :actionName="actionForModal"></modal-window>
   </div>
 </template>
 
@@ -50,13 +50,15 @@ export default class PersonList extends Vue {
   @Prop() readonly persons?: Person[];
 
   showModal = false;
+  actionForModal = "";
 
   @Emit("remove-person")
   removePerson(id: number) {
     return id;
   }
 
-  openModal() {
+  openModal(action: string) {
+    this.actionForModal = action;
     this.showModal = !this.showModal;
   }
 }
@@ -65,25 +67,41 @@ export default class PersonList extends Vue {
 <style lang="scss">
 .persons-list {
   margin: 30px 0;
-}
 
-.person-list__item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 0 15px;
-  padding: 25px 15px 25px 70px;
-  border-radius: 10px;
-  background: url("@/assets/icons/user-icon.svg") no-repeat 15px center;
-  box-shadow: 0px 0px 4px 0px rgba(34, 60, 80, 0.2);
-}
+  .person-list__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 15px;
+    padding: 25px 15px 25px 70px;
+    border-radius: 10px;
+    background: url("@/assets/icons/user-icon.svg") no-repeat 15px center;
+    box-shadow: 0px 0px 4px 0px rgba(34, 60, 80, 0.2);
 
-.persons-list_empty {
-  display: inline-block;
-  vertical-align: baseline;
-  margin: 0 0 15px;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 4px 0px rgba(34, 60, 80, 0.2);
+    @media screen and (max-width: 475px) {
+      position: relative;
+      padding: 25px 15px 25px 50px;
+      background-position: 5px center;
+    }
+  }
+
+  .persons-list_empty {
+    display: inline-block;
+    vertical-align: baseline;
+    margin: 0 0 15px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 4px 0px rgba(34, 60, 80, 0.2);
+  }
+
+  @media screen and (max-width: 475px) {
+    .button-wrapper {
+      width: 40px;
+    }
+    .button {
+      min-width: 30px;
+      min-height: 30px;
+    }
+  }
 }
 </style>

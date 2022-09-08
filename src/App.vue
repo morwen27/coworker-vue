@@ -83,19 +83,4 @@ h2 {
   justify-content: flex-end;
   margin: 0 -5px -5px;
 }
-
-@media screen and (max-width: 475px) {
-  .person-list__item {
-    position: relative;
-    padding: 25px 15px 25px 50px;
-    background-position: 5px center;
-  }
-  .button-wrapper {
-    width: 40px;
-  }
-  .button {
-    min-width: 30px;
-    min-height: 30px;
-  }
-}
 </style>

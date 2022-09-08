@@ -4,7 +4,7 @@
     <div class="modal">
       <h2>{{ title }}</h2>
       <div class="modal__container">
-        <template v-if="actionName === 'add' || 'edit'">
+        <template v-if="actionName === 'add' || actionName === 'edit'">
           <form ref="modal">
             <label for="firstName">
               <span class="label__title">Имя</span>
@@ -15,16 +15,15 @@
               <input type="text" id="lastName" />
             </label>
           </form>
-          <div class="button-wrapper">
-            <base-button :typeAction="actionName" :isModal="true"></base-button>
-          </div>
         </template>
         <template v-else-if="actionName === 'remove'">
-          <p>Вы уверены, что хотите удалить сотрудника?</p>
-          <base-button :typeAction="actionName"></base-button>
+          <p class="modal__warn">Вы уверены, что хотите удалить сотрудника?</p>
         </template>
+        <div class="button-wrapper">
+          <base-button :typeAction="'close'" :isModal="true"></base-button>
+          <base-button :typeAction="actionName" :isModal="true"></base-button>
+        </div>
       </div>
-      <base-button :typeAction="'close'" @click="!show"></base-button>
     </div>
   </div>
 </template>
@@ -63,11 +62,6 @@ export default class ModalWindow extends Vue {
     const index = modalTypes.findIndex((type) => type.name === this.actionName);
     return modalTypes[index].modalTitle;
   }
-
-  changeVisibility(): void {
-    console.log(`hey`);
-    this.show = !this.show;
-  }
 }
 </script>
 
@@ -75,20 +69,22 @@ export default class ModalWindow extends Vue {
 label {
   display: flex;
   flex-flow: row wrap;
+
+  input {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 4px 0px rgba(34, 60, 80, 0.4);
+  }
+  .label__title {
+    display: flex;
+    width: 100%;
+    margin: 10px 0 5px;
+  }
 }
-input {
-  display: flex;
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0px 0px 4px 0px rgba(34, 60, 80, 0.4);
-}
-.label__title {
-  display: flex;
-  width: 100%;
-  margin: 10px 0 5px;
-}
+
 .modal {
   position: fixed;
   top: 50%;
@@ -100,10 +96,20 @@ input {
   border-radius: 10px;
   box-shadow: 0px 0px 4px 0px rgba(34, 60, 80, 0.4);
   background: white;
+
+  .modal__container {
+    padding: 10px;
+  }
+
+  .modal__warn {
+    padding: 20px 0;
+  }
+
+  @media screen and (max-width: 530px) {
+    width: calc(100% - 30px);
+  }
 }
-.modal__container {
-  padding: 10px;
-}
+
 .overlay {
   position: fixed;
   top: 0;
@@ -112,10 +118,5 @@ input {
   right: 0;
   background: #000;
   opacity: 0.6;
-}
-@media screen and (max-width: 530px) {
-  .modal {
-    width: calc(100% - 30px);
-  }
 }
 </style>

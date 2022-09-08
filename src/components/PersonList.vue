@@ -1,11 +1,20 @@
 <template>
   <div>
     <ul v-if="persons?.length" class="persons-list">
-      <person-item
-        v-for="person of persons"
-        :person="person"
-        :key="person.id"
-      ></person-item>
+      <person-item v-for="person of persons" :person="person" :key="person.id">
+        <span class="button-wrapper">
+          <base-button
+            :type-action="'edit'"
+            :is-modal="false"
+            @click="openModal('edit')"
+          ></base-button>
+          <base-button
+            :type-action="'remove'"
+            :is-modal="false"
+            @click="openModal('remove')"
+          ></base-button>
+        </span>
+      </person-item>
     </ul>
     <p v-else class="persons-list persons-list_empty">
       Список сотрудников пуст. Чтобы добавить, нажмите кнопку ниже
@@ -56,9 +65,8 @@ export default class PersonList extends Vue {
     }
   }
 
-  @Emit("remove-person")
   removePerson(id: number) {
-    return id;
+    console.log(id);
   }
 
   openModal(action: string) {

@@ -1,15 +1,12 @@
 <template>
   <li class="person-list__item">
     <span>{{ person.firstName }} {{ person.lastName }}</span>
-    <span class="button-wrapper">
-      <base-button :type-action="'edit'" :is-modal="false"></base-button>
-      <base-button :type-action="'remove'" :is-modal="false"></base-button>
-    </span>
+    <slot></slot>
   </li>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 import BaseButton from "@/components/BaseButton.vue";
 import { Person } from "@/models/person";
 

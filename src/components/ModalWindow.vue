@@ -5,7 +5,7 @@
       <h2>{{ title }}</h2>
       <div class="modal__container">
         <template v-if="actionName === 'add' || actionName === 'edit'">
-          <form ref="modal">
+          <form ref="form">
             <label for="firstName">
               <span class="label__title">Имя</span>
               <input
@@ -79,10 +79,9 @@ export default class ModalWindow extends Vue {
     return !this.show;
   }
 
-  @Emit("submit-data")
-  submitData(): Person {
-    this.some();
-    return this.person;
+  submitData(): void {
+    this.$emit("submit-data", this.person);
+    this.resetForm();
   }
 
   get title(): string {
@@ -98,8 +97,10 @@ export default class ModalWindow extends Vue {
     };
   }
 
-  some() {
-    console.log(this.$refs.modal);
+  resetForm() {
+    this.$refs["form"]?.reset();
+    this.person.firstName = "";
+    this.person.lastName = "";
   }
 }
 </script>

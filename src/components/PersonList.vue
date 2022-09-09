@@ -1,19 +1,12 @@
 <template>
   <div>
     <ul v-if="persons?.length" class="persons-list">
-      <person-item v-for="person of persons" :person="person" :key="person.id">
-        <span class="button-wrapper">
-          <base-button
-            :type-action="'edit'"
-            :is-modal="false"
-            @click="openModal('edit')"
-          ></base-button>
-          <base-button
-            :type-action="'remove'"
-            :is-modal="false"
-            @click="openModal('remove')"
-          ></base-button>
-        </span>
+      <person-item
+        v-for="person of persons"
+        :person="person"
+        :key="person.id"
+        @open-modal="openModal($event.action, $event.person)"
+      >
       </person-item>
     </ul>
     <p v-else class="persons-list persons-list_empty">
@@ -22,26 +15,33 @@
     <base-button
       :type-action="'add'"
       :is-modal="false"
-      @click="openModal('add')"
+      @click="openModal('add', currentPerson)"
     ></base-button>
     <modal-window
-      :show="showModal"
+      v-if="showModal"
       :actionName="actionForModal"
+      :person="currentPerson"
       @close-modal="closeModal"
       @submit-data="getChangedData"
-    ></modal-window>
+    >
+    </modal-window>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import PersonItem from "@/components/PersonItem.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import ModalWindow from "@/components/ModalWindow.vue";
 import { Person } from "@/models/person";
-import axios from "axios";
+import { editPerson, getData, removePerson } from "@/getData";
+import { ButtonActions } from "@/models/button-actions";
 
-const baseURL = "http://localhost:3000/persons";
+export const currentPerson: Person = {
+  firstName: "",
+  lastName: "",
+  id: Date.now(),
+};
 
 @Component({
   components: {
@@ -51,26 +51,26 @@ const baseURL = "http://localhost:3000/persons";
   },
 })
 export default class PersonList extends Vue {
+  currentPerson!: Person;
   persons: Person[] = [];
 
   showModal = false;
   actionForModal = "";
 
-  async created() {
-    try {
-      const res = await axios.get(`${baseURL}`);
-      this.persons = res.data;
-    } catch (error) {
-      console.log(`Во время запроза произошла следующая ошибка: ${error}`);
-    }
+  created() {
+    this.currentPerson = currentPerson;
+    getData().then((res) => (this.persons = res));
   }
 
   removePerson(id: number) {
     console.log(id);
   }
 
-  openModal(action: string) {
+  openModal(action: string, person: Person) {
     this.actionForModal = action;
+    this.currentPerson = {
+      ...person,
+    };
     this.showModal = !this.showModal;
   }
 
@@ -78,8 +78,24 @@ export default class PersonList extends Vue {
     this.showModal = !this.showModal;
   }
 
-  getChangedData(person: Person) {
+  async getChangedData(person: Person) {
     console.log(person);
+
+    switch (this.actionForModal) {
+      case ButtonActions.edit: {
+        await editPerson(person);
+        const index = this.persons.findIndex((p) => p.id === person.id);
+        this.persons.splice(index, 1, person);
+
+        console.log(this.persons);
+        break;
+      }
+      case ButtonActions.remove: {
+        removePerson(person);
+        this.persons = this.persons.filter((p) => p.id !== person.id);
+        break;
+      }
+    }
   }
 }
 </script>

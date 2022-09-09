@@ -3,7 +3,9 @@
     type="button"
     class="button"
     :class="classModificator"
+    :disabled="blocked"
     v-on="$listeners"
+    ref="baseButton"
   >
     {{ title }}
   </button>
@@ -40,6 +42,7 @@ export default class BaseButton extends Vue {
   @Prop() readonly isModal!: boolean;
 
   modalButtonClasses = ["button_modal"];
+  blocked = false;
 
   get title() {
     return this.isModal ? buttonTypes[this.typeAction].title : "";
@@ -51,6 +54,10 @@ export default class BaseButton extends Vue {
           " "
         )}`
       : buttonTypes[this.typeAction].class;
+  }
+
+  disabledButton() {
+    this.blocked = true;
   }
 }
 </script>

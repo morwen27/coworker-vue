@@ -1,10 +1,17 @@
 import Vue from "vue";
 import App from "./App.vue";
 import focusDirective from "@/directives/focus";
+import { store } from "@/store";
 
 Vue.config.productionTip = false;
 Vue.directive("focus", focusDirective);
 
 new Vue({
+  store,
   render: (h) => h(App),
 }).$mount("#app");
+
+// new Vue({
+//   el: "#app",
+//   store,
+// });

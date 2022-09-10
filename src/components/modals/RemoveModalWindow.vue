@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import BaseButton from "@/components/BaseButton.vue";
 import { Person } from "@/models/person";
 

@@ -78,10 +78,6 @@ export default class ModalWindow extends Vue {
     return this.person;
   }
 
-  mounted() {
-    console.log(this.$refs["button"]);
-  }
-
   get title(): string {
     const index = modalTypes.findIndex((type) => type.name === this.actionName);
     return modalTypes[index].modalTitle;

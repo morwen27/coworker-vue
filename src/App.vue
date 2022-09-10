@@ -19,6 +19,8 @@ export default class App extends Vue {}
 </script>
 
 <style lang="scss">
+@import "variables.scss";
+
 *,
 *::before,
 *::after {
@@ -51,7 +53,7 @@ h2 {
   border-radius: 10px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background: #98ccfd;
+  background: $mainColor;
 }
 
 .button-wrapper {

@@ -63,6 +63,8 @@ export default class BaseButton extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/variables.scss";
+
 .button {
   display: flex;
   margin: 0 5px 5px;
@@ -77,13 +79,16 @@ export default class BaseButton extends Vue {
   &.button_remove {
     background: url("@/assets/icons/remove-icon.svg") no-repeat;
   }
+
   &.button_edit {
     background: url("@/assets/icons/edit-icon.svg") no-repeat;
   }
+
   &.button_add {
     margin-left: 0;
     background: url("@/assets/icons/add-icon.svg") no-repeat;
   }
+
   &.button_remove,
   &.button_edit,
   &.button_add {
@@ -97,8 +102,9 @@ export default class BaseButton extends Vue {
     margin: 10px 10px 0;
     padding: 5px 10px;
     color: white;
-    background: #98ccfd;
+    background: $mainColor;
   }
+
   .button:hover {
     opacity: 0.7;
   }

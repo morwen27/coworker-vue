@@ -59,11 +59,8 @@ export default class PersonList extends Vue {
 
   created() {
     this.currentPerson = currentPerson;
-    getData().then((res) => (this.persons = res));
-  }
-
-  removePerson(id: number) {
-    console.log(id);
+    this.persons = this.$store.getters.allPersons;
+    // getData().then((res) => (this.persons = res));
   }
 
   openModal(action: string, person: Person) {
@@ -79,8 +76,6 @@ export default class PersonList extends Vue {
   }
 
   async getChangedData(person: Person) {
-    console.log(person);
-
     switch (this.actionForModal) {
       case ButtonActions.edit: {
         await editPerson(person);
@@ -134,6 +129,7 @@ export default class PersonList extends Vue {
     .button-wrapper {
       width: 40px;
     }
+
     .button {
       min-width: 30px;
       min-height: 30px;

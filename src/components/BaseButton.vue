@@ -105,7 +105,8 @@ export default class BaseButton extends Vue {
     background: $mainColor;
   }
 
-  .button:hover {
+  &:hover,
+  &:disabled {
     opacity: 0.7;
   }
 }

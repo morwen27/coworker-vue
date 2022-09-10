@@ -86,6 +86,10 @@ export default class PersonList extends Vue {
         this.$store.dispatch("removePerson", person);
         break;
       }
+      case ButtonActions.add: {
+        this.$store.dispatch("addPerson", person);
+        break;
+      }
     }
   }
 }

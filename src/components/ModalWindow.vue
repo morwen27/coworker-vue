@@ -64,6 +64,9 @@ export default class ModalWindow extends Vue {
 
   @Emit("close-modal")
   closeModal(): boolean {
+    if (this.actionName === ButtonActions.add) {
+      (this.$refs["form"] as AddModalWindow).resetFrom();
+    }
     return false;
   }
 
@@ -74,7 +77,9 @@ export default class ModalWindow extends Vue {
     }
     if (this.actionName === ButtonActions.add) {
       (this.$refs["form"] as AddModalWindow).resetFrom();
+      (this.$refs["form"] as AddModalWindow).focus();
     }
+    console.log(this.person);
     return this.person;
   }
 

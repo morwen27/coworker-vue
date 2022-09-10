@@ -26,11 +26,14 @@ export const store: Store<PersonsState> = new Vuex.Store({
       const index = state.persons.findIndex((p) => p.id === data.id);
       state.persons.splice(index, 1, data);
     },
+    addPerson(state: PersonsState, data: Person) {
+      state.persons.push(data);
+    },
   },
   actions: {
     async fetchPersons(ctx) {
       try {
-        const request = await axios.get(`${baseURL}`);
+        const request = await axios.get(baseURL);
         const persons = await request.data;
         ctx.commit("changePersons", persons);
       } catch (error) {
@@ -52,6 +55,16 @@ export const store: Store<PersonsState> = new Vuex.Store({
         .put(`${baseURL}/${person.id}`, person)
         .then(() => {
           ctx.commit("editPerson", person);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async addPerson(ctx, person) {
+      await axios
+        .post(baseURL, person)
+        .then(() => {
+          ctx.commit("addPerson", person);
         })
         .catch((error) => {
           console.log(error);

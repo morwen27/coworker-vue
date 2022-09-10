@@ -22,6 +22,10 @@ export const store: Store<PersonsState> = new Vuex.Store({
     removePerson(state: PersonsState, data: Person) {
       state.persons = state.persons.filter((p) => p.id !== data.id);
     },
+    editPerson(state: PersonsState, data: Person) {
+      const index = state.persons.findIndex((p) => p.id === data.id);
+      state.persons.splice(index, 1, data);
+    },
   },
   actions: {
     async fetchPersons(ctx) {
@@ -38,6 +42,16 @@ export const store: Store<PersonsState> = new Vuex.Store({
         .delete(`${baseURL}/${person.id}`)
         .then(() => {
           ctx.commit("removePerson", person);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async editPerson(ctx, person) {
+      await axios
+        .put(`${baseURL}/${person.id}`, person)
+        .then(() => {
+          ctx.commit("editPerson", person);
         })
         .catch((error) => {
           console.log(error);

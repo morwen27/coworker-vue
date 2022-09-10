@@ -34,7 +34,6 @@ import PersonItem from "@/components/PersonItem.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import ModalWindow from "@/components/ModalWindow.vue";
 import { Person } from "@/models/person";
-import { editPerson, removePerson } from "@/getData";
 import { ButtonActions } from "@/models/button-actions";
 
 export const currentPerson: Person = {
@@ -80,15 +79,10 @@ export default class PersonList extends Vue {
   async getChangedData(person: Person) {
     switch (this.actionForModal) {
       case ButtonActions.edit: {
-        await editPerson(person);
-        const index = this.persons.findIndex((p) => p.id === person.id);
-        this.persons.splice(index, 1, person);
-
-        console.log(this.persons);
+        this.$store.dispatch("editPerson", person);
         break;
       }
       case ButtonActions.remove: {
-        // removePerson(person);
         this.$store.dispatch("removePerson", person);
         break;
       }

@@ -1,6 +1,9 @@
 import Vue from "vue";
-import Vuex, { Store } from "vuex";
+import Vuex, { ActionContext, Store } from "vuex";
+import axios from "axios";
 import { Person } from "@/models/person";
+
+const baseURL = "http://localhost:3000/persons";
 
 Vue.use(Vuex);
 
@@ -12,8 +15,22 @@ export const store: Store<PersonsState> = new Vuex.Store({
   state: {
     persons: [],
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    changePersons(state: PersonsState, data: Person[]) {
+      state.persons = data;
+    },
+  },
+  actions: {
+    async fetchPersons(ctx) {
+      try {
+        const request = await axios.get(`${baseURL}`);
+        const persons = await request.data;
+        ctx.commit("changePersons", persons);
+      } catch (error) {
+        console.log(`Во время запроза произошла следующая ошибка: ${error}`);
+      }
+    },
+  },
   getters: {
     allPersons(state: PersonsState) {
       return state.persons;

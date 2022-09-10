@@ -57,10 +57,10 @@ export default class PersonList extends Vue {
   showModal = false;
   actionForModal = "";
 
-  created() {
+  async created() {
     this.currentPerson = currentPerson;
+    this.$store.dispatch("fetchPersons");
     this.persons = this.$store.getters.allPersons;
-    // getData().then((res) => (this.persons = res));
   }
 
   openModal(action: string, person: Person) {

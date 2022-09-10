@@ -34,7 +34,7 @@ import PersonItem from "@/components/PersonItem.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import ModalWindow from "@/components/ModalWindow.vue";
 import { Person } from "@/models/person";
-import { editPerson, getData, removePerson } from "@/getData";
+import { editPerson, removePerson } from "@/getData";
 import { ButtonActions } from "@/models/button-actions";
 
 export const currentPerson: Person = {
@@ -52,15 +52,17 @@ export const currentPerson: Person = {
 })
 export default class PersonList extends Vue {
   currentPerson!: Person;
-  persons: Person[] = [];
+
+  get persons(): Person[] {
+    this.$store.dispatch("fetchPersons");
+    return this.$store.getters.allPersons;
+  }
 
   showModal = false;
   actionForModal = "";
 
   async created() {
     this.currentPerson = currentPerson;
-    this.$store.dispatch("fetchPersons");
-    this.persons = this.$store.getters.allPersons;
   }
 
   openModal(action: string, person: Person) {
@@ -86,8 +88,8 @@ export default class PersonList extends Vue {
         break;
       }
       case ButtonActions.remove: {
-        removePerson(person);
-        this.persons = this.persons.filter((p) => p.id !== person.id);
+        // removePerson(person);
+        this.$store.dispatch("removePerson", person);
         break;
       }
     }

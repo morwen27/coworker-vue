@@ -19,6 +19,9 @@ export const store: Store<PersonsState> = new Vuex.Store({
     changePersons(state: PersonsState, data: Person[]) {
       state.persons = data;
     },
+    removePerson(state: PersonsState, data: Person) {
+      state.persons = state.persons.filter((p) => p.id !== data.id);
+    },
   },
   actions: {
     async fetchPersons(ctx) {
@@ -29,6 +32,16 @@ export const store: Store<PersonsState> = new Vuex.Store({
       } catch (error) {
         console.log(`Во время запроза произошла следующая ошибка: ${error}`);
       }
+    },
+    async removePerson(ctx, person) {
+      await axios
+        .delete(`${baseURL}/${person.id}`)
+        .then(() => {
+          ctx.commit("removePerson", person);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
   getters: {

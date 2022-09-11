@@ -77,6 +77,11 @@ export default class PersonList extends Vue {
   }
 
   async getChangedData(person: Person) {
+    this.currentPerson = {
+      ...currentPerson,
+      id: Date.now(),
+    };
+
     switch (this.actionForModal) {
       case ButtonActions.edit: {
         this.$store.dispatch("editPerson", person);

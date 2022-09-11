@@ -40,7 +40,7 @@ export const store: Store<PersonsState> = new Vuex.Store({
         console.log(`Во время запроза произошла следующая ошибка: ${error}`);
       }
     },
-    async removePerson(ctx, person) {
+    async removePerson(ctx, person: Person) {
       await axios
         .delete(`${baseURL}/${person.id}`)
         .then(() => {
@@ -50,7 +50,7 @@ export const store: Store<PersonsState> = new Vuex.Store({
           console.log(error);
         });
     },
-    async editPerson(ctx, person) {
+    async editPerson(ctx, person: Person) {
       await axios
         .put(`${baseURL}/${person.id}`, person)
         .then(() => {
@@ -60,7 +60,7 @@ export const store: Store<PersonsState> = new Vuex.Store({
           console.log(error);
         });
     },
-    async addPerson(ctx, person) {
+    async addPerson(ctx, person: Person) {
       await axios
         .post(baseURL, person)
         .then(() => {

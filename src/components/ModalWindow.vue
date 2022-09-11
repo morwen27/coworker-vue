@@ -79,7 +79,6 @@ export default class ModalWindow extends Vue {
       (this.$refs["form"] as AddModalWindow).resetFrom();
       (this.$refs["form"] as AddModalWindow).focus();
     }
-    console.log(this.person);
     return this.person;
   }
 

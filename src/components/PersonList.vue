@@ -60,7 +60,7 @@ export default class PersonList extends Vue {
   showModal = false;
   actionForModal = "";
 
-  async created() {
+  created() {
     this.currentPerson = currentPerson;
   }
 
@@ -73,29 +73,34 @@ export default class PersonList extends Vue {
   }
 
   closeModal() {
+    this.setInitialPerson();
     this.showModal = !this.showModal;
   }
 
   async getChangedData(person: Person) {
-    this.currentPerson = {
-      ...currentPerson,
-      id: Date.now(),
-    };
-
     switch (this.actionForModal) {
       case ButtonActions.edit: {
         this.$store.dispatch("editPerson", person);
         break;
       }
       case ButtonActions.remove: {
+        this.setInitialPerson();
         this.$store.dispatch("removePerson", person);
         break;
       }
       case ButtonActions.add: {
+        this.setInitialPerson();
         this.$store.dispatch("addPerson", person);
         break;
       }
     }
+  }
+
+  setInitialPerson() {
+    this.currentPerson = {
+      ...currentPerson,
+      id: Date.now(),
+    };
   }
 }
 </script>

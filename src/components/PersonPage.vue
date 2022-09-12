@@ -16,13 +16,25 @@
 <script lang="ts">
 import { Person } from "@/models/person";
 import { Component, Vue } from "vue-property-decorator";
+import { RawLocation, Route } from "vue-router";
 
 @Component
 export default class PersonPage extends Vue {
+  personId: number = parseInt(this.$route.params.id);
+
   get person(): Person {
     return this.$store.getters.allPersons.find(
-      (p: Person) => p.id === parseInt(this.$route.params.id)
+      (p: Person) => p.id === this.personId
     );
+  }
+
+  beforeEnter(
+    to: Route,
+    from: Route,
+    next: (to?: RawLocation | false | ((vm: Vue) => void)) => void
+  ) {
+    console.log("beforeRouteUpdate");
+    next();
   }
 }
 </script>

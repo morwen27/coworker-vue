@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Vuex, { ActionContext, Store } from "vuex";
+import Vuex, { Store } from "vuex";
 import axios from "axios";
 import { Person } from "@/models/person";
 
@@ -11,7 +11,7 @@ interface PersonsState {
   persons: Person[];
 }
 
-export const store: Store<PersonsState> = new Vuex.Store({
+export default new Vuex.Store({
   state: {
     persons: [],
   },

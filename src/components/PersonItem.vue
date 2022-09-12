@@ -1,6 +1,8 @@
 <template>
   <li class="person-list__item">
-    <span>{{ person.firstName }} {{ person.lastName }}</span>
+    <router-link :to="{ name: 'person', params: { id: person.id } }">
+      <span>{{ person.firstName }} {{ person.lastName }}</span>
+    </router-link>
     <span class="button-wrapper">
       <base-button
         :type-action="'edit'"

@@ -109,6 +109,11 @@ export default class PersonList extends Vue {
 .persons-list {
   margin: 30px 0;
 
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
   .person-list__item {
     display: flex;
     justify-content: space-between;
